@@ -1,0 +1,85 @@
+library(ggpubr)
+library(dplyr)
+library(reshape2)
+library(ggridges)
+library(viridis)
+library(hrbrthemes)
+library(grDevices)
+library(gridExtra)
+library(gtable)
+library(grid)
+#library(lattice)
+setwd("C:/Users/hksca/OneDrive/Bayesian Big Data/BASiCS and Beyond/BASiCS Robustness/HPC BASiCS/2021/Simulation Experiment/Experiment 1/Local running")
+data.path.epsilon0<-getwd()
+setwd("C:/Users/hksca/OneDrive/Bayesian Big Data/BASiCS and Beyond/BASiCS Robustness/HPC BASiCS/2021/Simulation Experiment/Experiment 1/Local running_epsilon=0.25")
+data.path.epsilon1quarter<-getwd()
+setwd("C:/Users/hksca/OneDrive/Bayesian Big Data/BASiCS and Beyond/BASiCS Robustness/HPC BASiCS/2021/Simulation Experiment/Experiment 1/Local running_epsilon=0.5")
+data.path.epsilon2quarter<-getwd()
+setwd("C:/Users/hksca/OneDrive/Bayesian Big Data/BASiCS and Beyond/BASiCS Robustness/HPC BASiCS/2021/Simulation Experiment/Experiment 1/Local running_epsilon=0.75")
+data.path.epsilon3quarter<-getwd()
+setwd("C:/Users/hksca/OneDrive/Bayesian Big Data/BASiCS and Beyond/BASiCS Robustness/HPC BASiCS/2021/Simulation Experiment/Experiment 1/Local running_epsilon=1")
+data.path.epsilon4quarter<-getwd()
+setwd("C:/Users/hksca/OneDrive/Bayesian Big Data/BASiCS and Beyond/BASiCS Robustness/HPC BASiCS/2021/Simulation Experiment/Experiment 1/Local running_epsilon")
+data.path.epsilons<-getwd()
+delta1<-read.table(paste0(data.path.epsilon0,"/simulate_delta1.txt"))
+delta1<-as.matrix(delta1)
+mu1<-read.table(paste0(data.path.epsilon0,"/simulate_mu1.txt"))
+mu1<-as.matrix(mu1)
+i=9
+j=13
+n_bio_gene=nrow(delta1)
+n_run<-200
+run=1
+i_posterior_delta.epsilon0<-read.table(paste0(data.path.epsilons,"/",i,"_posterior_delta.epsilon0.txt"))
+i_posterior_delta.epsilon0<-as.matrix(i_posterior_delta.epsilon0)
+#i_df_posterior_delta.epsilon0<-as.data.frame(t(as.matrix(i_posterior_delta.epsilon0)))
+i_posterior_mu.epsilon0<-read.table(paste0(data.path.epsilons,"/",i,"_posterior_mu.epsilon0.txt"))
+i_posterior_mu.epsilon0<-as.matrix(i_posterior_mu.epsilon0)
+#i_df_posterior_mu.epsilon0<-as.data.frame(t(as.matrix(i_posterior_mu.epsilon0)))
+###nu phi s theta
+j_posterior_nu.epsilon0<-read.table(paste0(data.path.epsilons,"/",j,"_posterior_nu.epsilon0.txt"))
+j_posterior_nu.epsilon0<-as.matrix(j_posterior_nu.epsilon0)
+j_posterior_phi.epsilon0<-read.table(paste0(data.path.epsilons,"/",j,"_posterior_phi.epsilon0.txt"))
+j_df_posterior_phi.epsilon0<-as.matrix(j_posterior_phi.epsilon0)
+j_posterior_s.epsilon0<-read.table(paste0(data.path.epsilons,"/",j,"_posterior_s.epsilon0.txt"))
+j_df_posterior_s.epsilon0<-as.matrix(j_posterior_s.epsilon0)
+trueX<-read.table(paste0(data.path.epsilon0,"/simulate_X1.txt"))
+trueX<-as.matrix(trueX)
+posterior_theta.epsilon0<-read.table(paste0(data.path.epsilons,"/0_posterior_theta.epsilon0.txt"))
+posterior_theta.epsilon0<-as.matrix(posterior_theta.epsilon0)
+#delta<-rep(0,n_run)
+#mu<-rep(0,n_run)
+#nu<-rep(0,n_run)
+#phi<-rep(0,n_run)
+#simX<-rep(0,n_run)
+delta<-rep(0,1000)
+mu<-rep(0,1000)
+nu<-rep(0,1000)
+phi<-rep(0,1000)
+simX<-rep(0,1000)
+#for (run in (1:n_run)){
+for (draw in (1:1000)){
+  #draw<-sample(1000,1,replace=T)
+  #delta[run]<-i_posterior_delta.epsilon0[draw,run]
+  #mu[run]<-i_posterior_mu.epsilon0[draw,run]
+  #nu[run]<-j_posterior_nu.epsilon0[draw,run]
+  #phi[run]<-j_posterior_phi.epsilon0[draw,run]
+  delta[draw]<-i_posterior_delta.epsilon0[draw,run]
+  mu[draw]<-i_posterior_mu.epsilon0[draw,run]
+  nu[draw]<-j_posterior_nu.epsilon0[draw,run]
+  phi[draw]<-j_posterior_phi.epsilon0[draw,run]
+  #s[run]<-j_posterior_s.epsilon0[draw,run]
+  #theta[run]<-posterior_theta.epsilon0[draw,run]
+  #rho<-rgamma(1,shape=1/delta[run],rate=1/delta[run])
+  rho<-rgamma(1,shape=1/delta[draw],rate=1/delta[draw])
+  #lambda<-mu[run]*rho*nu[run]*phi[run]
+  lambda<-mu[draw]*rho*nu[draw]*phi
+  #simX[run]<-rpois(1,lambda)
+  simX[draw]<-rpois(1,lambda)
+}
+#}
+hist(simX,xlab=expression(X[ij]),breaks=70)
+abline(v=trueX[i,j],col="red",lwd=2)
+tx=trueX[i,j]
+a<-length(simX[simX<tx])
+
