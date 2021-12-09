@@ -1,4 +1,4 @@
-setwd("C:/Users/hksca/OneDrive/Bayesian Big Data/BASiCS and Beyond/BASiCS Robustness/HPC BASiCS/2021/Simulation Experiment/NewBASiCS/fixed dataset2")
+setwd("./NewBASiCS/fixed dataset2")
 library(LaplacesDemon)
 library(stats)
 library(BASiCS)
