@@ -1,7 +1,7 @@
 library(LaplacesDemon)
 library(MASS)
 library(stats)
-setwd("C:/Users/hksca/OneDrive/Bayesian Big Data/BASiCS and Beyond/BASiCS Robustness/HPC BASiCS/2021/Simulation Experiment/NewBASiCS/fixed dataset2")
+setwd("./Simulation Experiment/NewBASiCS/fixed dataset2")
 k<-12
 eta<-5
 n_bio_gene<-100
