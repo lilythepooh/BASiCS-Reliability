@@ -2,9 +2,9 @@ library(matrixStats)
 library(bayestestR)
 library(dplyr)
 library(ggplot2)
-setwd("C:/Users/hksca/OneDrive/Bayesian Big Data/BASiCS and Beyond/BASiCS Robustness/HPC BASiCS/2021/Simulation Experiment/Experiment 1/Local running")
+setwd()#set data path to where you stored the posterior results.
 data.path<-getwd()
-n_run<-200
+n_run<-200 #set the number of run to the number of replications you ran
 pdf("0_CI.pdf",paper="USr",width=17)
 for (index_run in (1:n_run)){
   posterior_delta<-read.table(paste0(data.path,"/sim_delta_",index_run,".txt"))
