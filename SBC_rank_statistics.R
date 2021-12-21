@@ -1,0 +1,116 @@
+library(matrixStats)
+library(bayestestR)
+library(dplyr)
+library(ggplot2)
+memory.limit(size=50000)
+#setwd() #set data path to the path where you save all the posterior samples for SBC
+data.path<-getwd()
+n_run<-100
+L=50
+rank_statistic<-function(g0,g_samp){
+  rank<-0
+  for (l in (1:L)){
+    if (g_samp[l]<g0){
+      rank=rank+1
+    }
+    else{
+      rank=rank
+    }
+  }
+  return(rank)
+}
+true_delta_in_89hdi<-matrix(NA,nrow=n_run,ncol=100)
+colnames(true_delta_in_89hdi)<-seq(from=1,to=100,by=1)
+rank_delta<-true_delta_in_89hdi
+true_mu_in_89hdi<-matrix(NA,nrow=n_run,ncol=100)
+colnames(true_mu_in_89hdi)<-seq(from=1,to=100,by=1)
+rank_mu<-true_mu_in_89hdi
+true_nu_in_89hdi<-matrix(NA,nrow=n_run,ncol=50)
+colnames(true_nu_in_89hdi)<-seq(from=1,to=50,by=1)
+rank_nu<-true_nu_in_89hdi
+true_phi_in_89hdi<-matrix(NA,nrow=n_run,ncol=50)
+colnames(true_phi_in_89hdi)<-seq(from=1,to=50,by=1)
+rank_phi<-true_phi_in_89hdi
+true_s_in_89hdi<-matrix(NA,nrow=n_run,ncol=50)
+colnames(true_s_in_89hdi)<-seq(from=1,to=50,by=1)
+rank_s<-true_s_in_89hdi
+true_theta_in_89hdi<-matrix(NA,nrow=n_run,ncol=1)
+rank_theta<-true_theta_in_89hdi
+for (index_run in (1:n_run)){
+  posterior_delta<-read.table(paste0(data.path,"/sim_delta_",index_run,".txt"))
+  posterior_delta<-as.matrix(posterior_delta)
+  N_samp=nrow(posterior_delta)
+  thin=round(N_samp/L)
+  sequ<-seq(from=1,by=thin,to=N_samp)
+  posterior_delta<-posterior_delta[sequ,]
+  colnames(posterior_delta)<-gsub("Gene.","",colnames(posterior_delta))
+  colnames(posterior_delta)<-gsub("\\.","",colnames(posterior_delta))
+  delta1<-read.table(paste0(data.path,"/simulate_",index_run,"_delta1.txt"))
+  delta1<-as.matrix(delta1)
+  for (i in 1:ncol(posterior_delta)){
+    posterior_delta_new<-posterior_delta[1:L,i]
+    rank_delta[index_run,colnames(posterior_delta)[i]]<-rank_statistic(delta1[i],posterior_delta_new)
+  }
+  posterior_mu<-read.table(paste0(data.path,"/sim_mu_",index_run,".txt"))
+  posterior_mu<-as.matrix(posterior_mu)
+  posterior_mu<-posterior_mu[sequ,]
+  colnames(posterior_mu)<-gsub("Gene.","",colnames(posterior_mu))
+  colnames(posterior_mu)<-gsub("\\.","",colnames(posterior_mu))
+  mu1<-read.table(paste0(data.path,"/simulate_",index_run,"_mu1.txt"))
+  mu1<-as.matrix(mu1)
+  mu1<-mu1[1:ncol(posterior_delta)]
+  for (i in 1:ncol(posterior_mu)){
+    posterior_mu_new<-posterior_mu[1:L,i]
+    rank_mu[index_run,colnames(posterior_mu)[i]]<-rank_statistic(mu1[i],posterior_mu_new)
+  }
+  posterior_nu<-read.table(paste0(data.path,"/sim_nu_",index_run,".txt"))
+  posterior_nu<-as.matrix(posterior_nu)
+  posterior_nu<-posterior_nu[sequ,]
+  colnames(posterior_nu)<-gsub("Cell.","",colnames(posterior_nu))
+  colnames(posterior_nu)<-gsub("._Batch1","",colnames(posterior_nu))
+  nu1<-read.table(paste0(data.path,"/simulate_",index_run,"_nu1.txt"))
+  nu1<-as.matrix(nu1)
+  for (i in 1:ncol(posterior_nu)){
+    posterior_nu_new<-posterior_nu[1:L,i]
+    rank_nu[index_run,colnames(posterior_nu)[i]]<-rank_statistic(nu1[i],posterior_nu_new)
+  }
+  posterior_phi<-read.table(paste0(data.path,"/sim_phi_",index_run,".txt"))
+  posterior_phi<-as.matrix(posterior_phi)
+  posterior_phi<-posterior_phi[sequ,]
+  colnames(posterior_phi)<-gsub("Cell.","",colnames(posterior_phi))
+  colnames(posterior_phi)<-gsub("._Batch1","",colnames(posterior_phi))
+  phi1<-read.table(paste0(data.path,"/simulate_",index_run,"_phi1.txt"))
+  phi1<-as.matrix(phi1)
+  ci_hdi_phi_89<-rep(0,ncol(posterior_phi))
+  ci_hdi_phi_low_89<-rep(0,ncol(posterior_phi))
+  ci_hdi_phi_high_89<-rep(0,ncol(posterior_phi))
+  phi1_in_hdi89<-rep(0,ncol(posterior_phi))
+  for (i in 1:ncol(posterior_phi)){
+    posterior_phi_new<-posterior_phi[1:L,i]
+    rank_phi[index_run,colnames(posterior_phi)[i]]<-rank_statistic(phi1[i],posterior_phi_new)
+  }
+  posterior_s<-read.table(paste0(data.path,"/sim_s_",index_run,".txt"))
+  posterior_s<-as.matrix(posterior_s)
+  posterior_s<-posterior_s[sequ,]
+  colnames(posterior_s)<-gsub("Cell.","",colnames(posterior_s))
+  colnames(posterior_s)<-gsub("._Batch1","",colnames(posterior_s))
+  s1<-read.table(paste0(data.path,"/simulate_",index_run,"_s1.txt"))
+  s1<-as.matrix(s1)
+  for (i in 1:ncol(posterior_s)){
+    posterior_s_new<-posterior_s[1:L,i]
+    rank_s[index_run,colnames(posterior_s)[i]]<-rank_statistic(s1[i],posterior_s_new)
+  }
+  posterior_theta<-read.table(paste0(data.path,"/sim_theta_",index_run,".txt"))
+  posterior_theta<-as.matrix(posterior_theta)
+  posterior_theta<-posterior_theta[sequ,]
+  theta1<-read.table(paste0(data.path,"/simulate_",index_run,"_theta1.txt"))
+  theta1<-as.matrix(theta1)
+  posterior_theta_new<-posterior_theta[1:L,1]
+  rank_theta[index_run,1]<-rank_statistic(theta1,posterior_theta_new)
+}
+write.table(rank_delta,"rank_delta.txt")
+write.table(rank_mu,"rank_mu.txt")
+write.table(rank_nu,"rank_nu.txt")
+write.table(rank_phi,"rank_phi.txt")
+write.table(rank_s,"rank_s.txt")
+write.table(rank_theta,"rank_theta.txt")
