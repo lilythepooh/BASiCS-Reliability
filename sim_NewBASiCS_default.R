@@ -1,4 +1,4 @@
-setwd("./NewBASiCS/fixed dataset2")
+setwd()#set data path to where your synthetic data is
 library(LaplacesDemon)
 library(stats)
 library(BASiCS)
