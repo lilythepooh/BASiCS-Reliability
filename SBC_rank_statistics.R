@@ -3,7 +3,7 @@ library(bayestestR)
 library(dplyr)
 library(ggplot2)
 memory.limit(size=50000)
-#setwd() #set data path to the path where you save all the posterior samples for SBC
+setwd() #set data path to the path where you save all the posterior samples for SBC
 data.path<-getwd()
 n_run<-100
 L=50
