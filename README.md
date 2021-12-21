@@ -7,6 +7,6 @@
 * To resimulate and rerun BASiCS MCMC for non-regression BASiCS for 100 replications, run 'resimulate_data_epsilon=0.R'.
 * To resimulate and rerun BASiCS MCMC for regression BASiCS for 100 replications, run 'resimulate_NewBASiCS_default.R'.
 * To run fixed synthetic data on modified non-regression BASiCS MCMC with epsilon=0,0.25,0.5,0.5,0.75,1, run 'sim_data_epsilon=0quarter.R', 'sim_data_epsilon=1quarter.R', 'sim_data_epsilon=2quarter.R','sim_data_epsilon=3quarter.R','sim_data_epsilon=4quarter.R'.
-* To calculate effective sample size for SBC and rerun BASiCS MCMC for SBC when the effective smaple size is too small, run 'sbc_minNeff.R'
+* To calculate effective sample size for SBC and rerun non-regression BASiCS MCMC for SBC when the effective smaple size is too small, run 'sbc_minNeff.R'
 * To calculate rank statistics for SBC, run 'SBC_rank_statistics.R'
 * To plot rank statistics in ecdf plots, run'rank_plot.R'
