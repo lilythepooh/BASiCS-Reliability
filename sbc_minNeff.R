@@ -1,11 +1,4 @@
-#g1d<-function(delta,mu,nu,phi,s,theta){
- # g_value<-sum(delta)+sum(mu)+theta+sum(nu*phi)+sum(s)
-  #return(g_value)
-#}
-#Compute g for the prior value
-#g0<-g1d(delta1,mu1,nu1,phi1,s1,theta1)
-#Compute g for the posterior samples
-#g_samp<-rep(0,500)
+#Calculate effective sample size and resimulate BASiCS posteriors if the effective sample size is too small
 library(LaplacesDemon)
 library(stats)
 library(BASiCS)
