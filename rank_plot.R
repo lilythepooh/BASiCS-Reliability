@@ -1,10 +1,7 @@
-plot(freq_true_delta_in_89hdi,type="p",pch=3,col="blue",ylim=c(0.5,1))
-points(freq_true_mu_in_89hdi,type="p",pch=4,col="red")
-abline(h=0.89)
 library(bayesplot)
 library(ggplot2)
-setwd("C:/Users/hksca/OneDrive/Bayesian Big Data/BASiCS and Beyond/BASiCS Robustness/HPC BASiCS/2021/Simulation Experiment/Too many Simulations/Local Running")
-#setwd("C:/Users/hksca/OneDrive/Bayesian Big Data/BASiCS and Beyond/BASiCS Robustness/HPC BASiCS/2021/Simulation Experiment/NewBASiCS/resimulate")
+setwd("./non_regression_BASiCS/resimulate")
+#setwd("./regression_BASiCS/resimulate")
 data.path<-getwd()
 ppc_ecdf_overlay_2 <- function (y, yrep, ..., pad = TRUE, size = 0.25, alpha = 0.7) 
 {
