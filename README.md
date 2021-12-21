@@ -3,3 +3,4 @@
 * To simulate data from regression BASiCS, run 'sim_data_BASiCS2018.R'.
 * To run synthetic data with non-regression BASiCS, run 'sim_data_epsilon=0.R'
 * To run synthetic data with regression BASiCS, run 'sim_NewBAsiCS_default.R'.
+* To resimulate and rerun BASiCS MCMC for non-regression BASiCS, run 'resimulate_data_epsilon=0.R'.
