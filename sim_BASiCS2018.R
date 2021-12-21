@@ -1,7 +1,7 @@
 library(LaplacesDemon)
 library(MASS)
 library(stats)
-setwd("./Simulation Experiment/NewBASiCS/fixed dataset2")
+setwd()#set data path to where you choose to store the simulated data
 k<-12
 eta<-5
 n_bio_gene<-100
