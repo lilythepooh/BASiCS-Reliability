@@ -1,4 +1,4 @@
-setwd()#set data path to where you store 
+setwd("./non_regression_BASiCS/fixed_dataset/epsilon=0.25")#set data path to where you store 
 #the non-regression BASiCS synthetic data(fixed dataset)
 library(LaplacesDemon)
 library(stats)
