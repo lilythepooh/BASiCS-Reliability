@@ -2,7 +2,8 @@ library(matrixStats)
 library(bayestestR)
 library(dplyr)
 library(ggplot2)
-data.path<-setwd("C:/Users/hksca/OneDrive/Bayesian Big Data/BASiCS and Beyond/BASiCS Robustness/HPC BASiCS/2021/Simulation Experiment/Too many Simulations/epsilon=0")
+data.path<-setwd()
+#set data path to where you stored the posterior results of interest
 n_run<-100
 pdf("0_CI.pdf",paper="USr",width=17)
 out_CI89<-matrix(0,nrow=n_run,ncol=3)
